@@ -1,0 +1,82 @@
+{
+  "__plugin-vue_export-helper-DlAUqK2U.js": {
+    "file": "assets/_plugin-vue_export-helper-DlAUqK2U.js",
+    "name": "_plugin-vue_export-helper"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-Dr1U-6C9.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-DjbF0uAV.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/pages/Admin/Categories.vue",
+      "resources/js/pages/Admin/Dashboard.vue",
+      "resources/js/pages/Admin/Products.vue",
+      "resources/js/pages/Auth/Login.vue",
+      "resources/js/pages/Home.vue",
+      "resources/js/pages/ProductDetail.vue"
+    ]
+  },
+  "resources/js/pages/Admin/Categories.vue": {
+    "file": "assets/Categories-DXm7vIfC.js",
+    "name": "Categories",
+    "src": "resources/js/pages/Admin/Categories.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ]
+  },
+  "resources/js/pages/Admin/Dashboard.vue": {
+    "file": "assets/Dashboard-DVt6cnZ9.js",
+    "name": "Dashboard",
+    "src": "resources/js/pages/Admin/Dashboard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/pages/Admin/Products.vue": {
+    "file": "assets/Products-Czrm10KY.js",
+    "name": "Products",
+    "src": "resources/js/pages/Admin/Products.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "__plugin-vue_export-helper-DlAUqK2U.js"
+    ]
+  },
+  "resources/js/pages/Auth/Login.vue": {
+    "file": "assets/Login-CWyOfYnh.js",
+    "name": "Login",
+    "src": "resources/js/pages/Auth/Login.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/pages/Home.vue": {
+    "file": "assets/Home-kcTiw2oz.js",
+    "name": "Home",
+    "src": "resources/js/pages/Home.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/pages/ProductDetail.vue": {
+    "file": "assets/ProductDetail-BrOuzycV.js",
+    "name": "ProductDetail",
+    "src": "resources/js/pages/ProductDetail.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "__plugin-vue_export-helper-DlAUqK2U.js",
+      "resources/js/app.js"
+    ]
+  }
+}

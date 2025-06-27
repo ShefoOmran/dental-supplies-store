@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\Product;
+use App\Models\Category;
 use App\Http\Controllers\Auth\LoginController;
 
 // Authentication Routes
@@ -20,9 +21,14 @@ Route::get('/', function () {
         ->orderBy('name')
         ->get();
         
+            $categories = Category::where('is_active', true)
+        ->orderBy('name')
+        ->get();
     return Inertia::render('Home', [
         'featuredProducts' => $featuredProducts,
-        'allProducts' => $allProducts
+        'allProducts' => $allProducts,
+        'categories' => $categories 
+
     ]);
 });
 
@@ -40,7 +46,7 @@ Route::prefix('admin')->middleware(['web', 'auth', \App\Http\Middleware\AdminMid
     Route::get('/categories', [\App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('admin.categories.index');
     Route::post('/categories', [\App\Http\Controllers\Admin\CategoryController::class, 'store'])->name('admin.categories.store');
     Route::put('/categories/{category}', [\App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('admin.categories.update');
-    Route::delete('/categories/{category}', [\App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('admin.categories.destroy');
+Route::delete('/categories/{category}', [\App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('admin.categories.destroy');
 });
 
 Route::get('/products/{slug}', function ($slug) {

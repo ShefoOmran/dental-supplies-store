@@ -28,6 +28,7 @@ class CategorySeeder extends Seeder
                 'slug' => Str::slug($cat['name']),
                 'description' => $cat['description'],
                 'is_active' => true,
+                'image'=> $cat['image'],
             ]);
         }
     }

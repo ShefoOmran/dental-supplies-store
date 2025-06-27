@@ -36,17 +36,26 @@ class ProductController extends Controller
 
         $product = Product::create($data);
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $idx => $image) {
-                $path = $image->store('products', 'public');
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'image_path' => $path,
-                    'is_primary' => $idx === 0, // first image as primary
-                    'alt_text' => $product->name,
-                ]);
-            }
-        }
+if ($request->hasFile('images')) {
+    foreach ($request->file('images') as $idx => $image) {
+        
+        $fileName = $image->getClientOriginalName();
+
+        $destination = public_path('storage/images/products');
+
+        $image->move($destination, $fileName);
+
+        $path = 'storage/images/products/' . $fileName;
+
+        ProductImage::create([
+            'product_id' => $product->id,
+            'image_path' => $path,
+            'is_primary' => $idx === 0,
+            'alt_text' => $product->name,
+        ]);
+    }
+}
+
 
         return redirect('/admin/products')->with('success', 'Product created successfully!');
     }

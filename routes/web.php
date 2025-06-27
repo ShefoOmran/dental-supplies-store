@@ -10,7 +10,6 @@ use App\Http\Controllers\Auth\LoginController;
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
 Route::get('/', function () {
     $featuredProducts = Product::with(['images'])
         ->where('featured', true)
@@ -21,14 +20,14 @@ Route::get('/', function () {
         ->orderBy('name')
         ->get();
         
-            $categories = Category::where('is_active', true)
+    $categories = Category::where('is_active', true)
         ->orderBy('name')
         ->get();
+        
     return Inertia::render('Home', [
         'featuredProducts' => $featuredProducts,
         'allProducts' => $allProducts,
-        'categories' => $categories 
-
+        'categories' => $categories
     ]);
 });
 

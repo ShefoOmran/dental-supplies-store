@@ -40,7 +40,7 @@
                 <td class="px-6 py-4 whitespace-nowrap">
 <img
   v-if="product.images && product.images.length"
-  :src="`/${product.images.find(img => img.is_primary)?.image_path || product.images[0].image_path}`"
+  :src="`${$page.props.asset}/${product.images.find(img => img.is_primary)?.image_path || product.images[0].image_path}`"
   class="w-12 h-12 object-cover rounded"
 />
                   <span v-else class="text-gray-400">No image</span>
@@ -214,7 +214,13 @@ export default {
       };
       this.images = [];
       this.imagePreviews = [];
-    }
+    },
+    methods: {
+  getImageUrl(path) {
+    const cleanPath = path.replace(/^storage\//, '');
+    return `/storage/${cleanPath}`;
+  }
+}
   }
 }
 </script> 

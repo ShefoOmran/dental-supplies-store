@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\ProductImage;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -23,42 +24,51 @@ class ProductController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-            'sku' => 'nullable|string|max:255',
-            'brand' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-        ]);
+{
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'category_id' => 'required|exists:categories,id',
+        'price' => 'required|numeric',
+        'stock' => 'required|integer',
+        'sku' => 'nullable|string|max:255',
+        'brand' => 'nullable|string|max:255',
+        'description' => 'nullable|string',
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        $product = Product::create($data);
+    $product = Product::create($data);
 
-if ($request->hasFile('images')) {
-    foreach ($request->file('images') as $idx => $image) {
-        
-        $fileName = $image->getClientOriginalName();
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $idx => $image) {
+            $destination = public_path('storage/images/products');
+            if (!File::exists($destination)) {
+                File::makeDirectory($destination, 0755, true);
+            }
 
-        $destination = public_path('storage/images/products');
+            $originalName = $image->getClientOriginalName();
+            
+            $fileName = pathinfo($originalName, PATHINFO_FILENAME);
+            $extension = $image->getClientOriginalExtension();
+            $counter = 1;
+            
+            while (file_exists($destination.'/'.$originalName)) {
+                $originalName = $fileName.'_'.$counter.'.'.$extension;
+                $counter++;
+            }
 
-        $image->move($destination, $fileName);
+            $image->move($destination, $originalName);
 
-        $path = 'storage/images/products/' . $fileName;
-
-        ProductImage::create([
-            'product_id' => $product->id,
-            'image_path' => $path,
-            'is_primary' => $idx === 0,
-            'alt_text' => $product->name,
-        ]);
+            ProductImage::create([
+                'product_id' => $product->id,
+                'image_path' => 'storage/images/products/'.$originalName,
+                'is_primary' => $idx === 0,
+                'alt_text' => $product->name,
+            ]);
+        }
     }
+
+    return redirect('/admin/products')->with('success', 'Product created successfully!');
 }
-
-
-        return redirect('/admin/products')->with('success', 'Product created successfully!');
-    }
 
     public function update(Request $request, Product $product)
     {

@@ -32,10 +32,6 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/', function () {
-    return Inertia::render('Home');
-})->name('home');
-
 // Admin Routes
 Route::prefix('admin')->middleware(['web', 'auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
     Route::get('/dashboard', function () {

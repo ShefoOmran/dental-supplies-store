@@ -137,11 +137,8 @@
               </div>
               <div class="border-t border-gray-200 px-4 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                 <Link v-for="product in paginatedProducts" :key="product.id" :href="`/products/${product.slug}`" class="bg-gray-50 rounded-lg shadow p-4 flex flex-col items-center hover:bg-blue-50 transition">
-<img 
-  v-if="product.images?.length"
-  :src="product.images.find(img => img.is_primary)?.image_path || product.images[0].image_path"
-  class="w-32 h-32 object-cover rounded mb-4"
-/>                  <div v-else class="w-32 h-32 bg-gray-200 flex items-center justify-center rounded mb-4 text-gray-400">No image</div>
+                  <img v-if="product.images && product.images.length" :src="`/${product.images.find(img => img.is_primary)?.image_path || product.images[0].image_path}`" class="w-32 h-32 object-cover rounded mb-4" />
+                  <div v-else class="w-32 h-32 bg-gray-200 flex items-center justify-center rounded mb-4 text-gray-400">No image</div>
                   <div class="font-semibold text-lg text-gray-900 mb-2">{{ product.name }}</div>
                   <div class="text-blue-600 font-bold text-xl mb-1">${{ formatPrice(product.price) }}</div>
                   <div class="text-gray-600 text-sm mb-2">{{ product.brand }}</div>

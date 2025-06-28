@@ -1,7 +1,7 @@
 <template>
   <AppLayout>
     <div class="min-h-screen bg-gray-100">
-      <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto py-20 px-4 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold text-gray-900 mb-8">
           <center class="text-xxl font-bold text-blue-700">Welcome to Dental Supplies Store</center>
         </h1>
@@ -53,7 +53,7 @@
         <!-- All Products Section with Filters -->
         <div class="flex flex-col lg:flex-row gap-8">
           <!-- Filters Sidebar -->
-          <div class="w-full lg:w-80 bg-white p-6 rounded-lg shadow">
+          <div class="w-full lg:w-80 bg-white p-6 rounded-lg shadow sticky top-24 self-start">
             <div class="flex justify-between items-center mb-6 border-b pb-4">
               <h2 class="text-xl font-bold">Filters</h2>
               <button @click="resetFilters" class="text-blue-600 hover:text-blue-800 text-sm font-medium">

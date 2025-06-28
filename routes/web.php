@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\LoginController;
 
 // Authentication Routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/', function () {
@@ -30,6 +31,10 @@ Route::get('/', function () {
         'categories' => $categories
     ]);
 });
+
+Route::get('/', function () {
+    return Inertia::render('Home');
+})->name('home');
 
 // Admin Routes
 Route::prefix('admin')->middleware(['web', 'auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {

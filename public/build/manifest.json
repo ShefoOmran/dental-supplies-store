@@ -4,12 +4,12 @@
     "name": "_plugin-vue_export-helper"
   },
   "resources/css/app.css": {
-    "file": "assets/app-Di2pV22Y.css",
+    "file": "assets/app-Jk1k-G9_.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-ZQoS0dmW.js",
+    "file": "assets/app-Bv9tdwX1.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -18,12 +18,13 @@
       "resources/js/pages/Admin/Dashboard.vue",
       "resources/js/pages/Admin/Products.vue",
       "resources/js/pages/Auth/Login.vue",
+      "resources/js/pages/Auth/SignUp.vue",
       "resources/js/pages/Home.vue",
       "resources/js/pages/ProductDetail.vue"
     ]
   },
   "resources/js/pages/Admin/Categories.vue": {
-    "file": "assets/Categories-BI8YRK7f.js",
+    "file": "assets/Categories-D8tVzESe.js",
     "name": "Categories",
     "src": "resources/js/pages/Admin/Categories.vue",
     "isDynamicEntry": true,
@@ -33,7 +34,7 @@
     ]
   },
   "resources/js/pages/Admin/Dashboard.vue": {
-    "file": "assets/Dashboard-DM17l7zM.js",
+    "file": "assets/Dashboard-CnsK_b1k.js",
     "name": "Dashboard",
     "src": "resources/js/pages/Admin/Dashboard.vue",
     "isDynamicEntry": true,
@@ -42,7 +43,7 @@
     ]
   },
   "resources/js/pages/Admin/Products.vue": {
-    "file": "assets/Products-vQ705Zvt.js",
+    "file": "assets/Products-CZuQnDet.js",
     "name": "Products",
     "src": "resources/js/pages/Admin/Products.vue",
     "isDynamicEntry": true,
@@ -52,7 +53,7 @@
     ]
   },
   "resources/js/pages/Auth/Login.vue": {
-    "file": "assets/Login-DHWax83L.js",
+    "file": "assets/Login-C9cP2Psj.js",
     "name": "Login",
     "src": "resources/js/pages/Auth/Login.vue",
     "isDynamicEntry": true,
@@ -60,8 +61,17 @@
       "resources/js/app.js"
     ]
   },
+  "resources/js/pages/Auth/SignUp.vue": {
+    "file": "assets/SignUp-BwFDHTx9.js",
+    "name": "SignUp",
+    "src": "resources/js/pages/Auth/SignUp.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
   "resources/js/pages/Home.vue": {
-    "file": "assets/Home-jBoEsXLo.js",
+    "file": "assets/Home-BeKYd11I.js",
     "name": "Home",
     "src": "resources/js/pages/Home.vue",
     "isDynamicEntry": true,
@@ -70,7 +80,7 @@
     ]
   },
   "resources/js/pages/ProductDetail.vue": {
-    "file": "assets/ProductDetail-BrG62QEi.js",
+    "file": "assets/ProductDetail-CWw7vVK-.js",
     "name": "ProductDetail",
     "src": "resources/js/pages/ProductDetail.vue",
     "isDynamicEntry": true,

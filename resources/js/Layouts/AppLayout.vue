@@ -59,9 +59,14 @@
 </template>
 
 <script setup>
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3'
+const page = usePage()
 
 function logout() {
-  router.post('/logout');
+  router.post('/logout', {}, {
+    onSuccess: () => {
+      router.visit('/login')
+    }
+  })
 }
 </script>

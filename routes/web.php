@@ -8,9 +8,15 @@ use App\Http\Controllers\Auth\LoginController;
 
 // Authentication Routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [LoginController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [LoginController::class, 'show'])->name('profile');
+    Route::put('/profile', [LoginController::class, 'updateProfile'])->name('profile.update');
+});
+
 Route::get('/', function () {
     $featuredProducts = Product::with(['images'])
         ->where('featured', true)

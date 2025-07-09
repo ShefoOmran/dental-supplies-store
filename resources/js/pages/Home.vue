@@ -1,68 +1,11 @@
 <template>
   <AppLayout>
     <div class="min-h-screen bg-gray-50">
-      <!-- Hero Section -->
-      <div class="bg-gradient-to-r from-blue-500 to-blue-700 py-24 px-4 sm:px-6 lg:px-8 text-white">
-        <div class="max-w-7xl mx-auto text-center">
-          <h1 class="text-4xl md:text-5xl font-bold mb-6 animate-fade-in-down">
-            Welcome to Dental Supplies Store
-          </h1>
-          <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto animate-fade-in-down delay-100">
-            High quality dental products and tools at competitive prices
-          </p>
-          <div class="relative max-w-md mx-auto animate-fade-in-down delay-200">
-            <input 
-              type="text" 
-              v-model="searchQuery" 
-              placeholder="Search for products..." 
-              class="w-full rounded-full py-3 px-5 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-lg"
-              @input="applyFilters"
-            >
-            <button class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
 
       <!-- Main Content -->
       <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <!-- Categories Section -->
-        <div class="mb-16 animate-fade-in">
-          <div class="flex justify-between items-center mb-8">
-            <h2 class="text-2xl font-bold text-gray-900">
-              <span class="border-b-4 border-blue-500 pb-2">Our Main Categories</span>
-            </h2>
-          </div>
-          
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-5 gap-6">
-            <Link
-              v-for="category in categories"
-              :key="category.id"
-              class="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1 flex flex-col items-center p-4 border border-gray-100"
-            >
-              <div class="relative w-full h-40 mb-4 overflow-hidden rounded-lg bg-gray-100">
-                <img 
-                  :src="category.image ? `/${category.image}` : '/categories/default-category.png'" 
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                  :alt="category.name"
-                />
-              </div>
-              <h3 class="text-lg font-semibold text-blue-700 text-center">{{ category.name }}</h3>
-              <p class="text-sm text-gray-600 text-center mt-1 line-clamp-2">{{ category.description }}</p>
-            </Link>
-          </div>
-        </div>
 
-          <!-- Featured Products Section -->
   <div class="mb-16 animate-fade-in">
-    <div class="flex justify-between items-center mb-8">
-      <h2 class="text-2xl font-bold text-gray-900">
-        <span class="border-b-4 border-blue-500 pb-2">Featured Products</span>
-      </h2>
-    </div>
     
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <div 

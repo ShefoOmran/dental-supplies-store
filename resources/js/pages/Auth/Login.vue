@@ -9,12 +9,12 @@
           {{ isLoginForm ? 'Welcome Back' : 'Create New Account' }}
         </h2>
         <p class="mt-2 text-center text-gray-600">
-          {{ isLoginForm ? 'Login to your account' : 'Sign up to new account' }}
+          {{ isLoginForm ? 'Login to your account' : 'Sign up for a new account' }}
         </p>
       </div>
 
       <!-- Login Form -->
-      <form v-if="isLoginForm" class="mt-8 space-y-6" @submit.prevent="handleLogin">
+      <form v-show="isLoginForm" class="mt-8 space-y-6" @submit.prevent="handleLogin">
         <div class="space-y-4">
           <div>
             <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
@@ -46,14 +46,14 @@
           </button>
           
           <div class="text-center">
-            <button @click="toggleForm" type="button" class="text-sm text-blue-600 hover:text-blue-500">
+            <button type="button" class="text-sm text-blue-600 hover:text-blue-500">
               Forgot your password?
             </button>
           </div>
           
           <div class="text-center text-sm text-gray-600">
             Don't have an account? 
-            <button @click="toggleForm" type="button" class="text-blue-600 hover:text-blue-500">
+            <button @click="toggleForm" type="button" class="text-blue-600 hover:text-blue-500 focus:outline-none">
               Register now
             </button>
           </div>
@@ -61,23 +61,24 @@
       </form>
 
       <!-- Signup Form -->
-      <form v-else class="mt-8 space-y-6" @submit.prevent="handleSignup">
+      <form v-show="!isLoginForm" class="mt-8 space-y-6" @submit.prevent="handleSignup">
         <div v-if="signupForm.hasErrors" class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
-    <div class="flex">
-      <div class="ml-3">
-        <h3 class="text-sm font-medium text-red-800">
-          يوجد خطأ في البيانات المدخلة
-        </h3>
-        <div class="mt-2 text-sm text-red-700">
-          <ul class="list-disc pl-5 space-y-1">
-            <li v-for="(error, key) in signupForm.errors" :key="key">
-              {{ error }}
-            </li>
-          </ul>
+          <div class="flex">
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800">
+                There are errors in your submission
+              </h3>
+              <div class="mt-2 text-sm text-red-700">
+                <ul class="list-disc pl-5 space-y-1">
+                  <li v-for="(error, key) in signupForm.errors" :key="key">
+                    {{ error }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
+        
         <div class="space-y-4">
           <div>
             <label for="signup-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
@@ -137,28 +138,57 @@
         </div>
 
         <div class="space-y-4">
-          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-            Sign Up
+          <button 
+            type="submit" 
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            :disabled="signupForm.processing"
+          >
+            <span v-if="!signupForm.processing">Sign Up</span>
+            <span v-else>
+              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Processing...
+            </span>
           </button>
           
           <div class="text-center text-sm text-gray-600">
             Already have an account? 
-            <button @click="toggleForm" type="button" class="text-blue-600 hover:text-blue-500">
+            <button @click="toggleForm" type="button" class="text-blue-600 hover:text-blue-500 focus:outline-none">
               Login now
             </button>
           </div>
         </div>
       </form>
+
+      <!-- pop-up error -->
+      <div v-if="showError" class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded shadow-lg z-50">
+        {{ errorMessage }}
+        <button class="ml-4" @click="showError = false">إغلاق</button>
+      </div>
+      <!-- pop-up success -->
+      <div v-if="showSuccess" class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded shadow-lg z-50">
+        {{ successMessage }}
+        <button class="ml-4" @click="showSuccess = false">إغلاق</button>
+      </div>
+
+      <div v-if="$page.props.success ?? false">{{ $page.props.success }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useForm, router } from '@inertiajs/vue3';
-import { Link } from '@inertiajs/vue3';
+import { ref, watch, computed } from 'vue'
+import { useForm, router, usePage } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3'
+import Swal from 'sweetalert2'
 
-// Toggle between login and signup forms
+const page = usePage()
+const error = computed(() => page.props.error ?? '')
+const success = computed(() => page.props.success ?? '')
+const errors = computed(() => page.props.errors ?? {})
+
 const isLoginForm = ref(true);
 const toggleForm = () => {
   isLoginForm.value = !isLoginForm.value;
@@ -168,13 +198,81 @@ const toggleForm = () => {
 const loginForm = useForm({
   email: '',
   password: '',
+  remember: false
 });
+
+const showError = ref(false);
+const errorMessage = ref('');
+const showSuccess = ref(false);
+const successMessage = ref('');
+
+// راقب الأخطاء القادمة من السيرفر
+watch(
+  () => usePage().props.errors,
+  (errors) => {
+    if (errors && errors.email) {
+      errorMessage.value = errors.email;
+      showError.value = true;
+    }
+  },
+  { immediate: true }
+);
+
+// راقب رسالة النجاح أو الخطأ القادمة من السيرفر
+watch(
+  () => usePage().props.success,
+  (msg) => {
+    if (msg) {
+      successMessage.value = msg;
+      showSuccess.value = true;
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  () => usePage().props.error,
+  (msg) => {
+    if (msg) {
+      errorMessage.value = msg;
+      showError.value = true;
+    }
+  },
+  { immediate: true }
+);
+
+const validateEmail = (email) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
 
 const handleLogin = () => {
   loginForm.post('/login', {
-    onSuccess: () => {
-      router.visit('/admin/dashboard');
+    preserveState: true,
+    onSuccess: (response) => {
+      // استخدم البيانات المرجعة من الخادم للتوجيه
+      const redirectPath = response.props.user.is_admin 
+        ? '/admin/dashboard' 
+        : '/profile';
+      
+      router.visit(redirectPath);
+      
+      Swal.fire({
+        title: 'Welcome back!',
+        text: `You're logged in as ${response.props.user.name}`,
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false
+      });
     },
+    onError: (errors) => {
+      Swal.fire({
+        title: 'Login Failed',
+        text: errors.message || 'Invalid email or password',
+        icon: 'error',
+        confirmButtonText: 'Try again'
+      });
+    }
   });
 };
 
@@ -185,21 +283,57 @@ const signupForm = useForm({
   phone: '',
   password: '',
   password_confirmation: '',
+  errors: {},
+  hasErrors: false
 });
 
 const handleSignup = () => {
   signupForm.clearErrors();
   
-  if (signupForm.password !== signupForm.password_confirmation) {
-    signupForm.setError('password_confirmation', 'تأكيد كلمة المرور غير متطابق');
+  if (!signupForm.name || !signupForm.email || !signupForm.phone) {
+    signupForm.setError('form', 'Please fill all required fields');
     return;
   }
 
-  signupForm.post('/', {
+  if (!validateEmail(signupForm.email)) {
+    signupForm.setError('email', 'Invalid email address');
+    return;
+  }
+
+  if (signupForm.password !== signupForm.password_confirmation) {
+    signupForm.setError('password_confirmation', 'Passwords do not match');
+    return;
+  }
+
+  signupForm.post('/register', {
     onSuccess: () => {
+      Swal.fire({
+        title: 'Success!',
+        text: 'Registration successful. Redirecting...',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false
+      }).then(() => {
+        signupForm.reset();
+        isLoginForm.value = true;
+        router.visit('/profile');
+      });
     },
     onError: (errors) => {
+      if (errors) {
+        signupForm.errors = errors;
+        signupForm.hasErrors = Object.keys(errors).length > 0;
+      }
     }
   });
 };
+
+function logout() {
+  router.post('/logout', {}, {
+    onSuccess: () => {
+      router.visit('/login')
+    }
+  })
+}
+
 </script>

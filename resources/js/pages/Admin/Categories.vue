@@ -1,10 +1,32 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <nav class="bg-white shadow mb-8">
-      <div class="max-w-4xl mx-auto px-4 py-4 flex space-x-6">
-        <a href="/admin/dashboard" class="text-gray-700 hover:text-blue-700">Dashboard</a>
-        <a href="/admin/products" class="text-gray-700 hover:text-blue-700">Products</a>
-        <a href="/admin/categories" class="text-blue-700 font-semibold">Categories</a>
+    <nav class="bg-white shadow">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex">
+            <div class="flex-shrink-0 flex items-center">
+              <h1 class="text-xl font-bold text-gray-900">Admin Dashboard</h1>
+            </div>
+            <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+              <a href="/admin/dashboard" class="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                Dashboard
+              </a>
+              <a href="/admin/categories" class="cursor-pointer border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                Categories
+              </a>
+              <a href="/admin/products" class="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                Products
+              </a>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <form @submit.prevent="logout" method="POST">
+              <button type="submit" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+                Logout
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </nav>
 
@@ -17,6 +39,17 @@
 
       <div v-if="$page.props.errors && Object.keys($page.props.errors).length" class="mb-4 p-4 bg-red-100 text-red-800 rounded">
         <div v-for="(error, key) in $page.props.errors" :key="key">{{ error }}</div>
+      </div>
+
+      <div class="mb-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow p-6 flex flex-col items-start">
+          <div class="text-blue-600 text-xl font-medium mb-1 font-bold">Total Categories</div>
+          <div class="text-2xl font-bold text-gray-900 mb-1">{{ totalCategories }}</div>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6 flex flex-col items-start">
+          <div class="text-blue-600 text-xl font-medium mb-1 font-bold">Active Categories</div>
+          <div class="text-2xl font-bold text-gray-900 mb-1">{{ activeCategories }}</div>
+        </div>
       </div>
 
       <div class="bg-white shadow rounded-lg p-6">
@@ -102,10 +135,26 @@
 </template>
 
 <script>
-import { router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
+
+function logout() {
+  router.post('/logout');
+}
 export default {
   props: {
-    categories: Array,
+    categories: {
+      type: Array,
+      required: true
+    }
+  },
+  computed: {
+    totalCategories() {
+      return this.categories.length;
+    },
+    activeCategories() {
+      // استخدم الخاصية الصحيحة حسب الداتا: active أو is_active
+      return this.categories.filter(cat => cat.active || cat.is_active).length;
+    }
   },
   data() {
     return {

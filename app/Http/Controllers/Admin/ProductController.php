@@ -15,7 +15,9 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['category', 'images'])->get();
+        $products = Product::with(['category', 'images'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20); // Add pagination for better performance
         $categories = Category::where('is_active', true)->get();
         return Inertia::render('Admin/Products', [
             'products' => $products,

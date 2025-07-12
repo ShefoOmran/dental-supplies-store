@@ -1,9 +1,32 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <nav class="bg-white shadow mb-8">
-      <div class="max-w-6xl mx-auto px-4 py-4 flex space-x-6">
-        <a href="/admin/dashboard" class="text-gray-700 hover:text-blue-700">Dashboard</a>
-        <a href="/admin/products" class="text-blue-700 font-semibold">Products</a>
+    <nav class="bg-white shadow">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex">
+            <div class="flex-shrink-0 flex items-center">
+              <h1 class="text-xl font-bold text-gray-900">Admin Dashboard</h1>
+            </div>
+            <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+              <a href="/admin/dashboard" class="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                Dashboard
+              </a>
+              <a href="/admin/categories" class="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                Categories
+              </a>
+              <a href="/admin/products" class="cursor-pointer border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                Products
+              </a>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <form @submit.prevent="logout" method="POST">
+              <button type="submit" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+                Logout
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </nav>
     <div class="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -32,13 +55,12 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="product in products" :key="product.id">
-                <td class="px-6 py-4 whitespace-nowrap">{{ product.name }}</td>
+              <tr v-for="product in products.data" :key="product.id">
+                                <td class="px-6 py-4 whitespace-nowrap">{{ product.name }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ product.category?.name || 'Uncategorized' }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">${{ formatPrice(product.price) }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ product.stock }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">
-<img
   v-if="product.images && product.images.length"
   :src="`${$page.props.asset}/${product.images.find(img => img.is_primary)?.image_path || product.images[0].image_path}`"
   class="w-12 h-12 object-cover rounded"
@@ -110,13 +132,25 @@
 </template>
 
 <script>
-import { router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 
+function logout() {
+  router.post('/logout');
+}
 export default {
   name: 'AdminProducts',
   props: {
     products: Array,
-    categories: Array
+    categories: Array,
+    overview: {
+      type: Object,
+      default: () => ({
+        total: 0,
+        active: 0,
+        withProducts: 0,
+        lastUpdated: 'N/A'
+      })
+    }
   },
   data() {
     return {
@@ -215,12 +249,10 @@ export default {
       this.images = [];
       this.imagePreviews = [];
     },
-    methods: {
-  getImageUrl(path) {
-    const cleanPath = path.replace(/^storage\//, '');
-    return `/storage/${cleanPath}`;
-  }
-}
+    getImageUrl(path) {
+      const cleanPath = path.replace(/^storage\//, '');
+      return `/storage/${cleanPath}`;
+    }
   }
 }
 </script> 

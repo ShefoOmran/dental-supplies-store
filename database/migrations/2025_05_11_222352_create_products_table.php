@@ -13,20 +13,24 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id')->nullable();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->longText('description');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->decimal('price', 10, 2);
-            $table->integer('stock')->default(0);
-            $table->string('sku')->unique()->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->boolean('featured')->default(false);
-            $table->decimal('weight', 8, 2)->nullable();
+            $table->integer('stock');
+            $table->string('sku')->nullable();
             $table->string('brand')->nullable();
+            $table->text('description')->nullable();
+            $table->boolean('featured')->default(false);
             $table->timestamps();
-
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
+            
+            // Add indexes for better performance
+            $table->index('name');
+            $table->index('slug');
+            $table->index('category_id');
+            $table->index('price');
+            $table->index('featured');
+            $table->index('created_at');
         });
     }
 

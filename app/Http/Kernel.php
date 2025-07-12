@@ -23,7 +23,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Illuminate\Foundation\Http\Middleware\HandleCors::class,
-        
+        \App\Http\Middleware\ContentSecurityPolicy::class, // Add CSP middleware
     ];
 
     /**
